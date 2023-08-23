@@ -1,4 +1,4 @@
-package main
+package usersgraph
 
 // create a class node to represent each user 
 import (

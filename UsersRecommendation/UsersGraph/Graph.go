@@ -1,4 +1,4 @@
-package main
+package usersgraph
 
 import (
 	"github.com/google/uuid"

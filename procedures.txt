@@ -1,0 +1,48 @@
+This is the file to plan out features and issues that need to completed
+
+There are 4 features that will be working on:
+
+1. Recommend users with the highest similarity scores to form study group
+2. Recommend current study group that share teh highest similarity with the user (prioritize the local area)
+3. Real-time matching
+4. Create study groups and invite friends!!!
+
+I - Recommend users with the highest similarity scores to form study group:
+
++ Receive data from the API from server and start processing the data
+
++ Represent each user information into vectors:
+    * Text data -> using TF-IDF for Natural Language Processing:
+        + Interests
+        + Study_env_pref
+        + Study_techniques_pref
+        + Time_management_pref
+    
+    * Date and Time data:
+        + Availability_time
+        + Study_time_pref
+        + Graduation_date
+    
+    * Geolocation data:
+        + Address_line_1
+        + Address_line_2
+        + City
+        + Province
+        + Country
+        + Postal_code
+        + Timezone
+
+    * Binary data: 
+        + Activity_status
+    
+    * Numerical data: 
+        + Age
+    
+    * Categorical data:
+        + Education_institutions
+        + Education_majors
+        + Education_degrees
+        + Courses_pref
+        + Communication_pref
+
++ Similarity Metrics are being used is Cosine Similarity
