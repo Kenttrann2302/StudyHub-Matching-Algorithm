@@ -8,7 +8,7 @@ import (
 )
 
 // tokenization - split the text into words and calculate the frequency of each word in each documentation
-func tokenization(documentation []string) []map[string]float64 { // parameters: an array of documentations
+func Tokenization(documentation []string) []map[string]float64 { // parameters: an array of documentations
 	termFrequencies := make([]map[string]float64, len(documentation));
 	for i, doc := range documentation {
 		terms := strings.Fields(doc); // seperates docs into terms
@@ -22,7 +22,7 @@ func tokenization(documentation []string) []map[string]float64 { // parameters: 
 }
 
 // Calculate the inverse document frequency (IDF)
-func calculateIDF(documentation []string, termFrequencies []map[string]float64)  map[string]float64 {
+func CalculateIDF(documentation []string, termFrequencies []map[string]float64)  map[string]float64 {
 	docCount := len(documentation);
 	inverseDocFreq := make(map[string]float64);
 	for _, freqMap := range termFrequencies {
@@ -39,7 +39,7 @@ func calculateIDF(documentation []string, termFrequencies []map[string]float64) 
 }
 
 // Calculate the TF-IDF 
-func calculateTF_IDF(documentation []string, termFrequencies []map[string]float64, inverseDocFreq map[string]float64) []map[string]float64 {
+func CalculateTF_IDF(documentation []string, termFrequencies []map[string]float64, inverseDocFreq map[string]float64) []map[string]float64 {
 	tfidf := make([]map[string]float64, len(documentation));
 	for i, freqMap := range termFrequencies {
 		tfidf[i] = make(map[string]float64);
