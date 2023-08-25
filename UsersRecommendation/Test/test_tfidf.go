@@ -83,25 +83,25 @@ func (testSuite *TF_IDF_Test) CompareFloats(a, b, tolerance float64) bool {
 // Test1: One less than 10 words documentation is represented in corrected vector
 func (testSuite *TF_IDF_Test) test1(t *testing.T) bool {
 	// Test set up
-	documentation := [2]string{
-		"I want to become a software developer at Google",
-		"Google is a popular search engine",
+	documentation := map[int]string{ // the int is the user graph node key
+		1: "I want to become a software developer at Google",
+		2: "Google is a popular search engine",
 	}
 
 	// Set the tolerance based on the number of decimal places you want to compare
 	tolerance := 1e-3
 
 	// testing the function
-	tf_map := vectorsrepresentation.Tokenization(documentation[:])
-	idf_map := vectorsrepresentation.CalculateIDF(documentation[:], tf_map)
-	tf_idf_map := vectorsrepresentation.CalculateTF_IDF(documentation[:], tf_map, idf_map)
+	tf_map := vectorsrepresentation.Tokenization(documentation)
+	idf_map := vectorsrepresentation.CalculateIDF(documentation, tf_map)
+	tf_idf_map := vectorsrepresentation.CalculateTF_IDF(documentation, tf_map, idf_map)
 
 	// checking the frequency map
-	expected_tf_map := []map[string]float64{
-		{
+	expected_tf_map := map[int]map[string]float64{
+		1: {
 			"I": float64(0.1111), "want": float64(0.1111), "to": float64(0.1111), "become": float64(0.1111), "a": float64(0.1111), "software": float64(0.1111), "developer": float64(0.1111), "at": float64(0.1111), "Google": float64(0.1111),
 		},
-		{
+		2: {
 			"Google": 0.1667, "is": 0.1667, "a": 0.1667, "popular": 0.1667, "search": 0.1667, "engine": 0.1667,
 		},
 	}
@@ -127,9 +127,9 @@ func (testSuite *TF_IDF_Test) test1(t *testing.T) bool {
 	}
 
 	// checking the term frequencies - inverse document frequencies values
-	expected_tf_idf_map := []map[string]float64{
-		{"I": 0.0770, "want": 0.0770, "to": 0.0770, "become": 0.0770, "a": 0.0000, "software": 0.0770, "developer": 0.0770, "at": 0.0770, "Google": 0.0000},
-		{"Google": 0.0000, "is": 0.1155, "a": 0.0000, "popular": 0.1155, "search": 0.1155, "engine": 0.1155},
+	expected_tf_idf_map := map[int]map[string]float64{
+		1: {"I": 0.0770, "want": 0.0770, "to": 0.0770, "become": 0.0770, "a": 0.0000, "software": 0.0770, "developer": 0.0770, "at": 0.0770, "Google": 0.0000},
+		2: {"Google": 0.0000, "is": 0.1155, "a": 0.0000, "popular": 0.1155, "search": 0.1155, "engine": 0.1155},
 	}
 
 	for i, expected_tf_idf_value := range expected_tf_idf_map {
@@ -147,29 +147,29 @@ func (testSuite *TF_IDF_Test) test1(t *testing.T) bool {
 // "Test2: Multiple less than 10 words with punctuations and special character documentations are represented in corrected vector"
 func (testSuite *TF_IDF_Test) test2(t *testing.T) bool {
 	// Test set up
-	documentation := [5]string{
-		"I love programming, but coding is fun!",
-		"Programming is fun! Really fun!",
-		"I enjoy coding.",
-		"Coding is interesting, isn't it?",
-		"I love coding!",
+	documentation := map[int]string{
+		1: "I love programming, but coding is fun!",
+		2: "Programming is fun! Really fun!",
+		3: "I enjoy coding.",
+		4: "Coding is interesting, isn't it?",
+		5: "I love coding!",
 	}
 
 	// testing the function
-	tf_map := vectorsrepresentation.Tokenization(documentation[:])
-	idf_map := vectorsrepresentation.CalculateIDF(documentation[:], tf_map)
-	tf_idf_map := vectorsrepresentation.CalculateTF_IDF(documentation[:], tf_map, idf_map)
+	tf_map := vectorsrepresentation.Tokenization(documentation)
+	idf_map := vectorsrepresentation.CalculateIDF(documentation, tf_map)
+	tf_idf_map := vectorsrepresentation.CalculateTF_IDF(documentation, tf_map, idf_map)
 
 	// Set the tolerance based on the number of decimal places you want to compare
 	tolerance := 1e-3
 
 	// checking the terms frequency map
-	expected_tf_map := []map[string]float64{
-		{"I": 0.1429, "love": 0.1429, "programming": 0.1429, "but": 0.1429, "coding": 0.1429, "is": 0.1429, "fun": 0.1429},
-		{"programming": 0.1111, "is": 0.0556, "fun": 0.1111, "really": 0.0556},
-		{"I": 0.0833, "enjoy": 0.0833, "coding": 0.0833},
-		{"Coding": 0.0833, "is": 0.0833, "interesting": 0.0833, "isn't": 0.0417, "it": 0.0417},
-		{"I": 0.0714, "love": 0.0714, "coding": 0.0714},
+	expected_tf_map := map[int]map[string]float64{
+		1: {"I": 0.1429, "love": 0.1429, "programming": 0.1429, "but": 0.1429, "coding": 0.1429, "is": 0.1429, "fun": 0.1429},
+		2: {"programming": 0.1111, "is": 0.0556, "fun": 0.1111, "really": 0.0556},
+		3: {"I": 0.0833, "enjoy": 0.0833, "coding": 0.0833},
+		4: {"Coding": 0.0833, "is": 0.0833, "interesting": 0.0833, "isn't": 0.0417, "it": 0.0417},
+		5: {"I": 0.0714, "love": 0.0714, "coding": 0.0714},
 	}
 
 	for i, expectedTFMap := range expected_tf_map {
@@ -193,12 +193,12 @@ func (testSuite *TF_IDF_Test) test2(t *testing.T) bool {
 	}
 
 	// checking the term frequencies - inverse document frequencies values
-	expected_tf_idf_map := []map[string]float64{
-		{"I": 0.0319, "love": 0.0319, "programming": 0.0319, "but": 0.0319, "coding": 0.0643, "is": 0.0319, "fun": 0.0319},
-		{"programming": 0.0565, "is": 0.0282, "fun": 0.0565, "really": 0.0282},
-		{"I": 0.0429, "enjoy": 0.0429, "coding": 0.0429},
-		{"Coding": 0.0429, "is": 0.0429, "interesting": 0.0429, "isn't": 0.0215, "it": 0.0215},
-		{"I": 0.0365, "love": 0.0365, "coding": 0.0365},
+	expected_tf_idf_map := map[int]map[string]float64{
+		1: {"I": 0.0319, "love": 0.0319, "programming": 0.0319, "but": 0.0319, "coding": 0.0643, "is": 0.0319, "fun": 0.0319},
+		2: {"programming": 0.0565, "is": 0.0282, "fun": 0.0565, "really": 0.0282},
+		3: {"I": 0.0429, "enjoy": 0.0429, "coding": 0.0429},
+		4: {"Coding": 0.0429, "is": 0.0429, "interesting": 0.0429, "isn't": 0.0215, "it": 0.0215},
+		5: {"I": 0.0365, "love": 0.0365, "coding": 0.0365},
 	}
 
 	for i, expected_tf_idf_value := range expected_tf_idf_map {
@@ -216,28 +216,28 @@ func (testSuite *TF_IDF_Test) test2(t *testing.T) bool {
 // "Test3: One or Two more than 50 words documentation is represented in corrected vector"
 func (testSuite *TF_IDF_Test) test3(t *testing.T) bool {
 	// Test set up
-	documentation := [3]string{
-		"I love programming. Programming is my passion. I enjoy coding projects. Coding empowers my creativity. I'm fascinated by algorithms. Debugging is essential for clean code.",
-		"Coding is fun! I love coding projects. Solving coding challenges is satisfying. Debugging is essential for clean code. I find joy in coding. Debugging helps me learn.",
-		"Programming languages offer endless possibilities. Coding empowers creativity and innovation. Software development is a dynamic field. I specialize in web development. Web technologies are constantly evolving.",
+	documentation := map[int]string{
+		1: "I love programming. Programming is my passion. I enjoy coding projects. Coding empowers my creativity. I'm fascinated by algorithms. Debugging is essential for clean code.",
+		2: "Coding is fun! I love coding projects. Solving coding challenges is satisfying. Debugging is essential for clean code. I find joy in coding. Debugging helps me learn.",
+		3: "Programming languages offer endless possibilities. Coding empowers creativity and innovation. Software development is a dynamic field. I specialize in web development. Web technologies are constantly evolving.",
 	}
 
 	tolerance := 1e-3
 
 	// testing the function
-	tf_map := vectorsrepresentation.Tokenization(documentation[:])
-	idf_map := vectorsrepresentation.CalculateIDF(documentation[:], tf_map)
-	tf_idf_map := vectorsrepresentation.CalculateTF_IDF(documentation[:], tf_map, idf_map)
+	tf_map := vectorsrepresentation.Tokenization(documentation)
+	idf_map := vectorsrepresentation.CalculateIDF(documentation, tf_map)
+	tf_idf_map := vectorsrepresentation.CalculateTF_IDF(documentation, tf_map, idf_map)
 
 	// checking the terms frequency map
-	expected_tf_map := []map[string]float64{
-		{
+	expected_tf_map := map[int]map[string]float64{
+		1: {
 			"I": 0.0435, "love": 0.0217, "programming": 0.0217, "is": 0.0217, "my": 0.0217, "passion": 0.0217, "enjoy": 0.0217, "coding": 0.0217, "projects": 0.0217, "empowers": 0.0217, "creativity": 0.0217, "fascinated": 0.0217, "by": 0.0217, "algorithms": 0.0217, "debugging": 0.0217, "essential": 0.0217, "for": 0.0217, "clean": 0.0217, "code": 0.0217,
 		},
-		{
+		2: {
 			"Coding": 0.0455, "is": 0.0227, "fun": 0.0227, "I": 0.0227, "love": 0.0227, "coding": 0.0227, "projects": 0.0227, "Solving": 0.0227, "challenges": 0.0227, "satisfying": 0.0227, "Debugging": 0.0227, "essential": 0.0227, "for": 0.0227, "clean": 0.0227, "code": 0.0227, "find": 0.0227, "joy": 0.0227, "in": 0.0227, "helps": 0.0227, "me": 0.0227, "learn": 0.0227,
 		},
-		{
+		3: {
 			"Programming": 0.0286, "languages": 0.0143, "offer": 0.0143, "endless": 0.0143, "possibilities": 0.0143, "Coding": 0.0143, "empowers": 0.0143, "creativity": 0.0143, "and": 0.0143, "innovation": 0.0143, "Software": 0.0143, "development": 0.0143, "is": 0.0143, "a": 0.0143, "dynamic": 0.0143, "field": 0.0143, "I": 0.0143, "specialize": 0.0143, "in": 0.0143, "web": 0.0143, "technologies": 0.0143, "are": 0.0143, "constantly": 0.0143, "evolving": 0.0143,
 		},
 	}
@@ -263,14 +263,14 @@ func (testSuite *TF_IDF_Test) test3(t *testing.T) bool {
 	}
 
 	// checking the term frequencies - inverse document frequencies values
-	expected_tf_idf_map := []map[string]float64{
-		{
+	expected_tf_idf_map := map[int]map[string]float64{
+		1: {
 			"I": 0.0177, "love": 0.0088, "programming": 0.0088, "is": 0.0088, "my": 0.0088, "passion": 0.0088, "enjoy": 0.0088, "coding": 0.0088, "projects": 0.0088, "empowers": 0.0088, "creativity": 0.0088, "fascinated": 0.0088, "by": 0.0088, "algorithms": 0.0088, "debugging": 0.0088, "essential": 0.0088, "for": 0.0088, "clean": 0.0088, "code": 0.0088,
 		},
-		{
+		2: {
 			"Coding": 0.0185, "is": 0.0092, "fun": 0.0092, "I": 0.0092, "love": 0.0092, "coding": 0.0092, "projects": 0.0092, "Solving": 0.0092, "challenges": 0.0092, "satisfying": 0.0092, "Debugging": 0.0092, "essential": 0.0092, "for": 0.0092, "clean": 0.0092, "code": 0.0092, "find": 0.0092, "joy": 0.0092, "in": 0.0092, "helps": 0.0092, "me": 0.0092, "learn": 0.0092,
 		},
-		{
+		3: {
 			"Programming": 0.0116, "languages": 0.0058, "offer": 0.0058, "endless": 0.0058, "possibilities": 0.0058, "Coding": 0.0058, "empowers": 0.0058, "creativity": 0.0058, "and": 0.0058, "innovation": 0.0058, "Software": 0.0058, "development": 0.0058, "is": 0.0058, "a": 0.0058, "dynamic": 0.0058, "field": 0.0058, "I": 0.0058, "specialize": 0.0058, "in": 0.0058, "web": 0.0058, "technologies": 0.0058, "are": 0.0058, "constantly": 0.0058, "evolving": 0.0058,
 		},
 	}
@@ -289,48 +289,48 @@ func (testSuite *TF_IDF_Test) test3(t *testing.T) bool {
 
 // "Test4: Multiple more than 100 words with punctuations and special character documentations are represented in corrected vector"
 func (testSuite *TF_IDF_Test) test4(t *testing.T) bool {
-	documentation := [8]string{
-		"Exploring distant galaxies is a captivating endeavor. Telescopes reveal cosmic wonders. Astronomers decode the language of stars and galaxies.",
-		"In the heart of bustling cities, life thrives. Skyscrapers pierce the sky, casting long shadows. Urban jungles merge nature and concrete in harmony.",
-		"History's pages are filled with tales of courage. Warriors face battles with unwavering resolve. Their stories echo through time, inspiring generations.",
-		"Across the rolling landscapes, farmers toil. Crops sway with the wind, a testament to hard work. Agriculture sustains communities and connects us to the earth.",
-		"From the depths of oceans to mountaintops, life flourishes. Ecosystems interweave species in delicate balance. Biodiversity ensures our planet's resilience.",
-		"Artisans craft masterpieces from raw materials. Hands mold clay, chisels shape stone. Creativity flows, giving life to sculptures, paintings, and timeless beauty.",
-		"Words have power to shape thoughts and spark revolutions. Writers weave narratives that inspire change. Literature's impact is felt across cultures and time.",
-		"Exploring the human mind's complexities, psychologists delve deep. Emotions, thoughts, and behaviors intertwine. Understanding ourselves brings clarity and growth.",
+	documentation := map[int]string{
+		1: "Exploring distant galaxies is a captivating endeavor. Telescopes reveal cosmic wonders. Astronomers decode the language of stars and galaxies.",
+		2: "In the heart of bustling cities, life thrives. Skyscrapers pierce the sky, casting long shadows. Urban jungles merge nature and concrete in harmony.",
+		3: "History's pages are filled with tales of courage. Warriors face battles with unwavering resolve. Their stories echo through time, inspiring generations.",
+		4: "Across the rolling landscapes, farmers toil. Crops sway with the wind, a testament to hard work. Agriculture sustains communities and connects us to the earth.",
+		5: "From the depths of oceans to mountaintops, life flourishes. Ecosystems interweave species in delicate balance. Biodiversity ensures our planet's resilience.",
+		6: "Artisans craft masterpieces from raw materials. Hands mold clay, chisels shape stone. Creativity flows, giving life to sculptures, paintings, and timeless beauty.",
+		7: "Words have power to shape thoughts and spark revolutions. Writers weave narratives that inspire change. Literature's impact is felt across cultures and time.",
+		8: "Exploring the human mind's complexities, psychologists delve deep. Emotions, thoughts, and behaviors intertwine. Understanding ourselves brings clarity and growth.",
 	}
 
 	tolerance := 1e-3
 
 	// testing the function
-	tf_map := vectorsrepresentation.Tokenization(documentation[:])
-	idf_map := vectorsrepresentation.CalculateIDF(documentation[:], tf_map)
-	tf_idf_map := vectorsrepresentation.CalculateTF_IDF(documentation[:], tf_map, idf_map)
+	tf_map := vectorsrepresentation.Tokenization(documentation)
+	idf_map := vectorsrepresentation.CalculateIDF(documentation, tf_map)
+	tf_idf_map := vectorsrepresentation.CalculateTF_IDF(documentation, tf_map, idf_map)
 
 	// checking the terms frequency map
-	expected_tf_map := []map[string]float64{
-		{
+	expected_tf_map := map[int]map[string]float64{
+		1: {
 			"Exploring": 0.0588, "distant": 0.0588, "galaxies": 0.1176, "is": 0.0588, "a": 0.0588, "captivating": 0.0588, "endeavor": 0.0588, "Telescopes": 0.0588, "reveal": 0.0588, "cosmic": 0.0588, "wonders": 0.0588, "Astronomers": 0.0588, "decode": 0.0588, "the": 0.1176, "language": 0.0588, "of": 0.0588, "stars": 0.0588, "and": 0.0588,
 		},
-		{
+		2: {
 			"In": 0.0714, "the": 0.0714, "heart": 0.0714, "of": 0.0714, "bustling": 0.0714, "cities": 0.0714, "life": 0.0714, "thrives": 0.0714, "Skyscrapers": 0.0714, "pierce": 0.0714, "sky": 0.0714, "casting": 0.0714, "long": 0.0714, "shadows": 0.0714, "Urban": 0.0714, "jungles": 0.0714, "merge": 0.0714, "nature": 0.0714, "and": 0.0714, "concrete": 0.0714, "in": 0.0714, "harmony": 0.0714,
 		},
-		{
+		3: {
 			"History's": 0.0526, "pages": 0.0526, "are": 0.0526, "filled": 0.0526, "with": 0.0526, "tales": 0.0526, "of": 0.0526, "courage": 0.0526, "Warriors": 0.0526, "face": 0.0526, "battles": 0.0526, "unwavering": 0.0526, "resolve": 0.0526, "Their": 0.0526, "stories": 0.0526, "echo": 0.0526, "through": 0.0526, "time": 0.0526, "inspiring": 0.0526, "generations": 0.0526,
 		},
-		{
+		4: {
 			"Across": 0.0714, "the": 0.0714, "rolling": 0.0714, "landscapes": 0.0714, "farmers": 0.0714, "toil": 0.0714, "Crops": 0.0714, "sway": 0.0714, "with": 0.0714, "wind": 0.0714, "a": 0.0714, "testament": 0.0714, "to": 0.0714, "hard": 0.0714, "work": 0.0714, "Agriculture": 0.0714, "sustains": 0.0714, "communities": 0.0714, "connects": 0.0714, "us": 0.0714, "earth": 0.0714,
 		},
-		{
+		5: {
 			"From": 0.0556, "the": 0.0556, "depths": 0.0556, "of": 0.0556, "oceans": 0.0556, "to": 0.0556, "mountaintops": 0.0556, "life": 0.0556, "flourishes": 0.0556, "Ecosystems": 0.0556, "interweave": 0.0556, "species": 0.0556, "in": 0.0556, "delicate": 0.0556, "balance": 0.0556, "Biodiversity": 0.0556, "ensures": 0.0556, "our": 0.0556, "planet's": 0.0556, "resilience": 0.0556,
 		},
-		{
+		6: {
 			"Artisans": 0.0625, "craft": 0.0625, "masterpieces": 0.0625, "from": 0.0625, "raw": 0.0625, "materials": 0.0625, "Hands": 0.0625, "mold": 0.0625, "clay": 0.0625, "chisels": 0.0625, "shape": 0.0625, "stone": 0.0625, "Creativity": 0.0625, "flows": 0.0625, "giving": 0.0625, "life": 0.0625, "to": 0.0625, "sculptures": 0.0625, "paintings": 0.0625, "and": 0.0625, "timeless": 0.0625, "beauty": 0.0625,
 		},
-		{
+		7: {
 			"Words": 0.0556, "have": 0.0556, "power": 0.0556, "to": 0.0556, "shape": 0.0556, "thoughts": 0.0556, "and": 0.1111, "spark": 0.0556, "revolutions": 0.0556, "Writers": 0.0556, "weave": 0.0556, "narratives": 0.0556, "that": 0,
 		},
-		{
+		8: {
 			"Exploring": 0.0667, "the": 0.0667, "human": 0.0667, "mind's": 0.0667, "complexities": 0.0667, "psychologists": 0.0667, "delve": 0.0667, "deep": 0.0667, "Emotions": 0.0667, "thoughts": 0.0667, "and": 0.0667, "behaviors": 0.0667, "intertwine": 0.0667, "Understanding": 0.0667, "ourselves": 0.0667, "brings": 0.0667, "clarity": 0.0667, "growth": 0.0667,
 		},
 	}
@@ -357,15 +357,15 @@ func (testSuite *TF_IDF_Test) test4(t *testing.T) bool {
 	}
 
 	// checking the term frequencies - inverse document frequencies values
-	expected_tf_idf_map := []map[string]float64{
-		{"Across": 0.000779819, "distant": 0.000779819, "galaxies": 0.000779819, "revealing": 0.000779819, "cosmic": 0.000779819, "wonders": 0.000779819, "Telescopes": 0.000779819, "endeavor": 0.000779819, "captivating": 0.000779819},
-		{"In": 0.000779819, "the": 0.000778225, "heart": 0.000779819, "bustling": 0.000779819, "cities": 0.000779819, "life": 0.000778225, "thrives": 0.000779819, "Skyscrapers": 0.000779819, "pierce": 0.000779819, "sky": 0.000779819, "casting": 0.000779819, "long": 0.000779819, "shadows": 0.000779819, "Urban": 0.000779819, "jungles": 0.000779819, "merge": 0.000779819, "nature": 0.000779819, "concrete": 0.000779819, "harmony": 0.000779819},
-		{"History's": 0.000779819, "pages": 0.000779819, "filled": 0.000779819, "tales": 0.000779819, "courage": 0.000779819, "Warriors": 0.000779819, "face": 0.000779819, "battles": 0.000779819, "unwavering": 0.000779819, "resolve": 0.000779819, "Their": 0.000779819, "stories": 0.000779819, "echo": 0.000779819, "through": 0.000779819, "time": 0.000779819, "inspiring": 0.000779819, "generations": 0.000779819},
-		{"Across": 0.000779819, "rolling": 0.000779819, "landscapes": 0.000779819, "farmers": 0.000779819, "toil": 0.000779819, "Crops": 0.000779819, "sway": 0.000779819, "wind": 0.000779819, "testament": 0.000779819, "hard": 0.000779819, "work": 0.000779819, "Agriculture": 0.000779819, "sustains": 0.000779819, "communities": 0.000779819, "connects": 0.000779819, "us": 0.000779819, "earth": 0.000779819},
-		{"From": 0.000779819, "depths": 0.000779819, "oceans": 0.000779819, "mountaintops": 0.000779819, "flourishes": 0.000779819, "Ecosystems": 0.000779819, "interweave": 0.000779819, "species": 0.000779819, "delicate": 0.000779819, "balance": 0.000779819, "Biodiversity": 0.000779819, "ensures": 0.000779819, "our": 0.000779819, "planet's": 0.000779819, "resilience": 0.000779819},
-		{"Artisans": 0.000779819, "craft": 0.000779819, "masterpieces": 0.000779819, "raw": 0.000779819, "materials": 0.000779819, "Hands": 0.000779819, "mold": 0.000779819, "clay": 0.000779819, "chisels": 0.000779819, "shape": 0.000779819, "stone": 0.000779819, "Creativity": 0.000779819, "flows": 0.000779819, "giving": 0.000779819, "sculptures": 0.000779819, "paintings": 0.000779819, "timeless": 0.000779819, "beauty": 0.000779819},
-		{"Words": 0.000779819, "have": 0.000779819, "power": 0.000779819, "shape": 0.000779819, "thoughts": 0.000779819, "spark": 0.000779819, "revolutions": 0.000779819, "Writers": 0.000779819, "weave": 0.000779819, "narratives": 0.000779819, "that": 0.000779819, "inspire": 0.000779819, "change": 0.000779819, "Literature's": 0.000779819, "impact": 0.000779819, "felt": 0.000779819, "across": 0.000779819, "cultures": 0.000779819},
-		{"Exploring": 0.000779819, "human": 0.000779819, "mind's": 0.000779819, "complexities": 0.000779819, "psychologists": 0.000779819, "delve": 0.000779819, "deep": 0.000779819, "Emotions": 0.000779819, "behaviors": 0.000779819, "intertwine": 0.000779819, "Understanding": 0.000779819, "ourselves": 0.000779819, "brings": 0.000779819, "clarity": 0.000779819, "growth": 0.000779819},
+	expected_tf_idf_map := map[int]map[string]float64{
+		1: {"Across": 0.000779819, "distant": 0.000779819, "galaxies": 0.000779819, "revealing": 0.000779819, "cosmic": 0.000779819, "wonders": 0.000779819, "Telescopes": 0.000779819, "endeavor": 0.000779819, "captivating": 0.000779819},
+		2: {"In": 0.000779819, "the": 0.000778225, "heart": 0.000779819, "bustling": 0.000779819, "cities": 0.000779819, "life": 0.000778225, "thrives": 0.000779819, "Skyscrapers": 0.000779819, "pierce": 0.000779819, "sky": 0.000779819, "casting": 0.000779819, "long": 0.000779819, "shadows": 0.000779819, "Urban": 0.000779819, "jungles": 0.000779819, "merge": 0.000779819, "nature": 0.000779819, "concrete": 0.000779819, "harmony": 0.000779819},
+		3: {"History's": 0.000779819, "pages": 0.000779819, "filled": 0.000779819, "tales": 0.000779819, "courage": 0.000779819, "Warriors": 0.000779819, "face": 0.000779819, "battles": 0.000779819, "unwavering": 0.000779819, "resolve": 0.000779819, "Their": 0.000779819, "stories": 0.000779819, "echo": 0.000779819, "through": 0.000779819, "time": 0.000779819, "inspiring": 0.000779819, "generations": 0.000779819},
+		4: {"Across": 0.000779819, "rolling": 0.000779819, "landscapes": 0.000779819, "farmers": 0.000779819, "toil": 0.000779819, "Crops": 0.000779819, "sway": 0.000779819, "wind": 0.000779819, "testament": 0.000779819, "hard": 0.000779819, "work": 0.000779819, "Agriculture": 0.000779819, "sustains": 0.000779819, "communities": 0.000779819, "connects": 0.000779819, "us": 0.000779819, "earth": 0.000779819},
+		5: {"From": 0.000779819, "depths": 0.000779819, "oceans": 0.000779819, "mountaintops": 0.000779819, "flourishes": 0.000779819, "Ecosystems": 0.000779819, "interweave": 0.000779819, "species": 0.000779819, "delicate": 0.000779819, "balance": 0.000779819, "Biodiversity": 0.000779819, "ensures": 0.000779819, "our": 0.000779819, "planet's": 0.000779819, "resilience": 0.000779819},
+		6: {"Artisans": 0.000779819, "craft": 0.000779819, "masterpieces": 0.000779819, "raw": 0.000779819, "materials": 0.000779819, "Hands": 0.000779819, "mold": 0.000779819, "clay": 0.000779819, "chisels": 0.000779819, "shape": 0.000779819, "stone": 0.000779819, "Creativity": 0.000779819, "flows": 0.000779819, "giving": 0.000779819, "sculptures": 0.000779819, "paintings": 0.000779819, "timeless": 0.000779819, "beauty": 0.000779819},
+		7: {"Words": 0.000779819, "have": 0.000779819, "power": 0.000779819, "shape": 0.000779819, "thoughts": 0.000779819, "spark": 0.000779819, "revolutions": 0.000779819, "Writers": 0.000779819, "weave": 0.000779819, "narratives": 0.000779819, "that": 0.000779819, "inspire": 0.000779819, "change": 0.000779819, "Literature's": 0.000779819, "impact": 0.000779819, "felt": 0.000779819, "across": 0.000779819, "cultures": 0.000779819},
+		8: {"Exploring": 0.000779819, "human": 0.000779819, "mind's": 0.000779819, "complexities": 0.000779819, "psychologists": 0.000779819, "delve": 0.000779819, "deep": 0.000779819, "Emotions": 0.000779819, "behaviors": 0.000779819, "intertwine": 0.000779819, "Understanding": 0.000779819, "ourselves": 0.000779819, "brings": 0.000779819, "clarity": 0.000779819, "growth": 0.000779819},
 	}
 
 	for i, expected_tf_idf_value := range expected_tf_idf_map {
@@ -383,29 +383,29 @@ func (testSuite *TF_IDF_Test) test4(t *testing.T) bool {
 // "Test5: TF-IDF Vectors represents the documentations correctly"
 func (testSuite *TF_IDF_Test) test5(t *testing.T) bool {
 	// test set up
-	documentation := [5]string{
-		"I enjoy playing the guitar and making dinner for my family and friends.",
-		"Music is my passion, and I love listening to various genres. I also like playing soccer and basketball during my leisure.",
-		"I'm passionate about coding and learning new programming languages. I also like listening to Taylor Swift songs!",
-		"Cooking is my hobby, and I enjoy trying new recipes. I also likes playing a variety of music instruments including guitar.",
-		"I usually spend most of my day training for my basketball team. I also like to cook my own meal.",
+	documentation := map[int]string{
+		1: "I enjoy playing the guitar and making dinner for my family and friends.",
+		2: "Music is my passion, and I love listening to various genres. I also like playing soccer and basketball during my leisure.",
+		3: "I'm passionate about coding and learning new programming languages. I also like listening to Taylor Swift songs!",
+		4: "Cooking is my hobby, and I enjoy trying new recipes. I also likes playing a variety of music instruments including guitar.",
+		5: "I usually spend most of my day training for my basketball team. I also like to cook my own meal.",
 	}
 
 	tolerance := 1e-3
 
 	// get the result of the function
-	tf_map := vectorsrepresentation.Tokenization(documentation[:])
-	idf_map := vectorsrepresentation.CalculateIDF(documentation[:], tf_map)
-	tf_idf_map := vectorsrepresentation.CalculateTF_IDF(documentation[:], tf_map, idf_map)
-	tf_idf_vectors := vectorsrepresentation.CalculateTFIDFVectors(tf_idf_map, documentation[:])
+	tf_map := vectorsrepresentation.Tokenization(documentation)
+	idf_map := vectorsrepresentation.CalculateIDF(documentation, tf_map)
+	tf_idf_map := vectorsrepresentation.CalculateTF_IDF(documentation, tf_map, idf_map)
+	tf_idf_vectors := vectorsrepresentation.CalculateTFIDFVectors(tf_idf_map, documentation)
 
 	// test the tf-idf vectors representation for each document
-	expected_tf_idf_vectors := [][]float64{
-		{0.5625, 0.5625, 1.5625, 0.125, 1.5625, 0.125, 1.5625, 1.5625, 0.125, 0.5625, 1.5625, 1.5625},
-		{0.5625, 0.5625, 1.5625, 0.125, 0, 0, 0.5625, 0, 0, 0.5625, 0, 0},
-		{0.5625, 0, 0, 0, 0, 0, 0.5625, 0, 0.5625, 0, 0, 0},
-		{0, 0.5625, 0, 0, 0, 0, 0.5625, 0.5625, 0, 0.5625, 0, 0},
-		{0.5625, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.5625},
+	expected_tf_idf_vectors := map[int][]float64{
+		1: {0.01611576, 0.01611576, 0.0, 0.01611576, 0.01611576, 0.01611576, 0.03223152, 0.03223152, 0.03223152, 0.03223152, 0.03223152},
+		2: {0.0, 0.0, 0.01173195, 0.0, 0.01173195, 0.01173195, 0.0, 0.0, 0.0, 0.0, 0.01173195},
+		3: {0.0, 0.0, 0.01921097, 0.0, 0.01921097, 0.01921097, 0.0, 0.0, 0.0, 0.0, 0.0, 0.01921097, 0.01921097},
+		4: {0.0, 0.0, 0.01257039, 0.0, 0.01257039, 0.01257039, 0.0, 0.0, 0.0, 0.01257039, 0.01257039, 0.0, 0.0, 0.01257039, 0.0, 0.0},
+		5: {0.01565151, 0.01565151, 0.0, 0.01565151, 0.0, 0.01565151, 0.0, 0.0, 0.0, 0.01565151},
 	}
 
 	for i, vector := range expected_tf_idf_vectors {
