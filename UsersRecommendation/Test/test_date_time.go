@@ -1,0 +1,5 @@
+package main
+
+// TEST REPRESENTS DATE TIME VECTORS AND DATE TIME COSINE SIMILARITY
+// Test begins here
+

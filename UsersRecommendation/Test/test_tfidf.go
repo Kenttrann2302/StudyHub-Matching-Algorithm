@@ -1,6 +1,6 @@
 package main
 
-// TEST REPRESENTS TEXT DATA AS VECTOR
+// TEST REPRESENTS TEXT DATA AS VECTOR AND TF-IDF COSINE SIMILARITY
 import (
 	"StudyHub-Matching-Algorithm/UsersRecommendation/VectorsRepresentation"
 	"fmt"
