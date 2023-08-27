@@ -32,26 +32,28 @@ func get_status_str(status bool) string {
 
 // Define the test suite
 type TF_IDF_Test struct {
-	test_result      [5]bool
-	test_description [5]string
+	test_result      [7]bool
+	test_description [7]string
 }
 
 func NewTF_IDF_Test() *TF_IDF_Test {
 	return &TF_IDF_Test{
-		test_result: [5]bool{false, false, false, false, false},
-		test_description: [5]string{
+		test_result: [7]bool{false, false, false, false, false, false, false},
+		test_description: [7]string{
 			"Test1: One or Two less than 10 words documentation is represented in corrected vector",
 			"Test2: Multiple less than 10 words with punctuations and special character documentations are represented in corrected vector",
 			"Test3: One or Two more than 50 words documentation is represented in corrected vector",
 			"Test4: Multiple more than 100 words with punctuations and special character documentations are represented in corrected vector",
 			"Test5: TF-IDF Vectors represents the documentations correctly",
+			"Test6: TF-IDF Vectors magnitudes are calculated correctly",
+			"Test7: Cosine Similarity yields the correct results",
 		},
 	}
 }
 
 // function to get the test description -> string
 func (testSuite *TF_IDF_Test) getTestDescription(test_nums int) string {
-	if test_nums < 1 || test_nums > 5 {
+	if test_nums < 1 || test_nums > 7 {
 		return ""
 	}
 	return testSuite.test_description[test_nums-1]
@@ -64,12 +66,14 @@ func (testSuite *TF_IDF_Test) runAllTests(t *testing.T) {
 	testSuite.test_result[2] = testSuite.test3(t)
 	testSuite.test_result[3] = testSuite.test4(t)
 	testSuite.test_result[4] = testSuite.test5(t)
+	testSuite.test_result[5] = testSuite.test6(t)
+	testSuite.test_result[6] = testSuite.test7(t)
 }
 
 // function to print the report
 func (testSuite *TF_IDF_Test) printReport() {
 	fmt.Println("----------------- TF_IDF TEST RESULT -----------------")
-	for i := 0; i < 5; i++ {
+	for i := 0; i < 7; i++ {
 		fmt.Print(testSuite.test_description[i] + "\n" + get_status_str(testSuite.test_result[i]) + "\n")
 	}
 }
@@ -419,6 +423,20 @@ func (testSuite *TF_IDF_Test) test5(t *testing.T) bool {
 	}
 
 	return true
+}
+
+// "Test6: TF-IDF Vectors magnitudes are calculated correctly"
+func (testSuite *TF_IDF_Test) test6(t *testing.T) bool {
+	// test set up
+	// test written
+	return false;
+}
+
+// "Test7: Cosine Similarity yields the correct results"
+func (testSuite *TF_IDF_Test) test7(t *testing.T) bool {
+	// test set up
+	// test written
+	return false;
 }
 
 // ----------------- MAIN --------------------
