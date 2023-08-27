@@ -66,7 +66,7 @@ func calculateDateTimeCosineSimilarity(date_time_vectors map[int][][]int, vector
 				}
 			}
 			// the date_time cosine similarity between 2 users will be the average cosine similarity (sum cosine result for 7 days divided by 7 days) between them
-			average_cosine_similarity := temp_sum_cosine_result / 7;
+			average_cosine_similarity := temp_sum_cosine_result / float64(7.0);
 			cosineResult[first_user_key][sec_user_key] = average_cosine_similarity;
 		}
 	}
