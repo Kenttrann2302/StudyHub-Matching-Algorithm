@@ -22,7 +22,7 @@ I - Recommend users with the highest similarity scores to form study group:
         + Availability_time
         + Graduation_date
     
-    * Geolocation data:
+    * Geolocation data: (**** These geolocation data can either be live data, (they will be used to find the recommended users when the user goes online) or they can be historical data if the user is offline or not willing to share the current location)
         + Address_line_1
         + Address_line_2
         + City
