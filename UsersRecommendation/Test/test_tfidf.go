@@ -3,6 +3,7 @@ package main
 // TEST REPRESENTS TEXT DATA AS VECTOR AND TF-IDF COSINE SIMILARITY
 import (
 	"StudyHub-Matching-Algorithm/UsersRecommendation/VectorsRepresentation"
+	// "StudyHub-Matching-Algorithm/UsersRecommendation/API"
 	"fmt"
 	"math"
 	"testing"
@@ -10,17 +11,11 @@ import (
 
 // Assert Macros for test cases
 func ASSERT_TRUE(t *testing.T, condition bool) bool {
-	if !condition {
-		return false
-	}
-	return true
+	return condition;
 }
 
 func ASSERT_FALSE(t *testing.T, condition bool) bool {
-	if condition {
-		return false
-	}
-	return true
+	return !condition;
 }
 
 func get_status_str(status bool) string {
@@ -36,7 +31,7 @@ type TF_IDF_Test struct {
 	test_description [7]string
 }
 
-func NewTF_IDF_Test() *TF_IDF_Test {
+func NEWTF_IDF_Test() *TF_IDF_Test {
 	return &TF_IDF_Test{
 		test_result: [7]bool{false, false, false, false, false, false, false},
 		test_description: [7]string{
@@ -439,9 +434,6 @@ func (testSuite *TF_IDF_Test) test7(t *testing.T) bool {
 	return false;
 }
 
-// ----------------- MAIN --------------------
-func main() {
-	testSuite := NewTF_IDF_Test()
-	testSuite.runAllTests(&testing.T{})
-	testSuite.printReport()
-}
+
+
+
