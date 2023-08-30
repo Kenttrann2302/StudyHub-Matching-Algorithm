@@ -2,6 +2,7 @@ package main
 
 import (
 	"StudyHub-Matching-Algorithm/UsersRecommendation/API"
+	"fmt"
 )
 
 // ----------------- MAIN -------------------- //
@@ -21,7 +22,13 @@ func main() {
 	province := "Ontario"
 	country := "Canada"
 	postal_code := "L6V2S2"
-	user_longlat_map := make(map[int]map[string]string)
+
+	// initialize a map to store all the user's address latitude and longtitude
+	user_longlat_map := make(map[int]map[string]float64)
+
+	for i := 0; i < 10; i++ { // Replace 10 with the desired size
+		user_longlat_map[i] = make(map[string]float64)
+	}
 
 	// test the function
 	api.GetLongLat(
@@ -33,4 +40,7 @@ func main() {
 		postal_code,
 		user_longlat_map,
 	)
+
+	// traverse through the user_longlat_map 
+	fmt.Println(user_longlat_map);
 }
