@@ -16,7 +16,7 @@ func main() {
 	// test Date-Time
 
 	// test Geolocation
-	user_key := 10234
+	user_key := 8
 	address_line_1 := "75 Skelton Boulevard"
 	city := "Brampton"
 	province := "Ontario"
@@ -29,7 +29,7 @@ func main() {
 	for i := 0; i < 10; i++ { // Replace 10 with the desired size
 		user_longlat_map[i] = make(map[string]float64)
 	}
-
+	
 	// test the function
 	api.GetLongLat(
 		user_key,
