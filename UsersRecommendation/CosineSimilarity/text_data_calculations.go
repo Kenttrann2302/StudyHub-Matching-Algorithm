@@ -10,9 +10,14 @@ between each of them.
 */
 
 // function to calculate the magnitude of each vector
-func calculateTFIDFMagnitude(list_of_vectors map[int][]float64) map[int]float64 {
+func CalculateTFIDFMagnitude(list_of_vectors map[int][]float64, pre_calculated_magnitude map[int]float64) map[int]float64 {
 	vector_magnitudes_map := make(map[int]float64)
 	for user_key, vector := range list_of_vectors {
+		// if the user's vector has been calculated before -> skip
+		if pre_calculated_magnitude[user_key] != math.MaxFloat64 {
+			vector_magnitudes_map[user_key] = pre_calculated_magnitude[user_key];
+			continue;
+		}
 		sum := 0.0
 		for _, value := range vector {
 			sum += value * value
@@ -23,7 +28,7 @@ func calculateTFIDFMagnitude(list_of_vectors map[int][]float64) map[int]float64 
 }
 
 // function to calculate the cosine similarity between each vector in the given list of users
-func calculateTFIDFCosineSimilarity(list_of_vectors map[int][]float64, vectors_magnitudes map[int]float64) [][]float64 {
+func CalculateTFIDFCosineSimilarity(list_of_vectors map[int][]float64, vectors_magnitudes map[int]float64, pre_calculated_cos_similarity [][]float64) [][]float64 {
 	cosineResult := make([][]float64, len(list_of_vectors))
 	for i := range list_of_vectors {
 		cosineResult[i] = make([]float64, len(list_of_vectors)) // create a n x n matrix for cosine similarity between 2 users
@@ -35,6 +40,10 @@ func calculateTFIDFCosineSimilarity(list_of_vectors map[int][]float64, vectors_m
 		for col, sec_vector := range list_of_vectors {
 			if row == col {
 				continue // ignore the diagonals
+			}
+			if pre_calculated_cos_similarity[row][col] != math.MaxFloat64 {
+				cosineResult[row][col] = pre_calculated_cos_similarity[row][col]; // if this relationship has been calculated -> skip
+				continue;
 			}
 			for index := 0; index < len(vector); index++ {
 				dot_product += vector[index] * sec_vector[index]

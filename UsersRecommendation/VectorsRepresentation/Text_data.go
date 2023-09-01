@@ -10,17 +10,21 @@ import (
 // tokenization - split the text into words and calculate the frequency of each word in each documentation
 // TF = (Number of occurences of term in document) / (Total number of terms in document)
 // Measure the importance of the term within a specific document
-func Tokenization(documentation map[int]string) map[int]map[string]float64 { // parameters: an array of documentations
-	termFrequencies := make(map[int]map[string]float64, len(documentation))
+func Tokenization(documentation map[int]string, pre_calculated_tf map[int]map[string]float64) map[int]map[string]float64 { // parameters: an array of documentations
+	termFrequencies := make(map[int]map[string]float64, len(documentation));
 	for i, doc := range documentation {
-		terms := strings.Fields(doc) // seperates docs into terms
-		termFrequencies[i] = make(map[string]float64)
-		totalTerms := float64(len(terms))
+		if pre_calculated_tf[i] != nil {
+			termFrequencies[i] = pre_calculated_tf[i]; // if the user's documentation has been calculated before -> skip
+			continue;
+		}
+		terms := strings.Fields(doc); // seperates docs into terms
+		termFrequencies[i] = make(map[string]float64);
+		totalTerms := float64(len(terms));
 		for _, term := range terms {
-			termFrequencies[i][term] += 1.0 / totalTerms // calculate the term frequency inside this document
+			termFrequencies[i][term] += 1.0 / totalTerms; // calculate the term frequency inside this document
 		}
 	}
-	return termFrequencies
+	return termFrequencies;
 }
 
 // Calculate the inverse document frequency (IDF) -> the log(total number of documents / Number of documents containing the term) -> measure of how unique or rare a term is across a collection of documents

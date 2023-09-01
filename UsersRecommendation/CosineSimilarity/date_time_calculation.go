@@ -6,7 +6,7 @@ import (
 )
 
 // function to calculate the magnitude of each date time vector
-func calculateDateTimeMagnitude(date_time_vectors map[int][][]int) map[int][]float64 {
+func CalculateDateTimeMagnitude(date_time_vectors map[int][][]int) map[int][]float64 {
 	magnitude_result := make(map[int][]float64);
 	for key := range magnitude_result {
 		magnitude_result[key] = make([]float64, 7);
@@ -34,7 +34,7 @@ func calculateDateTimeMagnitude(date_time_vectors map[int][][]int) map[int][]flo
 */
 
 // function to calculate the cosine similarity between each corresponding vector between each user
-func calculateDateTimeCosineSimilarity(date_time_vectors map[int][][]int, vectors_magnitude map[int][]float64) [][]float64 { // the result will be the cosine similarity after comparing all the corresponding date between 2 users
+func CalculateDateTimeCosineSimilarity(date_time_vectors map[int][][]int, vectors_magnitude map[int][]float64) [][]float64 { // the result will be the cosine similarity after comparing all the corresponding date between 2 users
 	cosineResult := make([][]float64, len(date_time_vectors));
 	for i := range date_time_vectors {
 		cosineResult[i] = make([]float64, len(date_time_vectors));

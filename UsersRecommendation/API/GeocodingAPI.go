@@ -9,6 +9,7 @@ import (
 	"strings"
 	"os"
 	"io"
+	"path/filepath"
 )
 
 // get the API key for Geoapify
@@ -37,7 +38,8 @@ func GetLongLat(user_key int, address_line_1 string, city string, province strin
 	streetName += parts1[len(parts1)-1];
 
 	// get the api key
-	configFile, err := os.Open("config.json");
+	configPath := filepath.Join("..", "Configuration", "config.json")
+	configFile, err := os.Open(configPath);
 	if err != nil {
 		log.Fatal(`Error opening config file: `, err);
 	}
