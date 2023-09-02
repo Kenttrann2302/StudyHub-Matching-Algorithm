@@ -13,7 +13,7 @@ package vectorsrepresentation
 		...
 	}
 */
-func CalculateDateTimeVectors(availability_date_time map[int]map[string][]int) map[int][][]int {
+func CalculateDateTimeVectors(availability_date_time map[int]map[string][]int, pre_calculated_date_time_vector map[int][][]int) map[int][][]int {
 	result := make(map[int][][]int);
 	for key := range result {
 		result[key] = make([][]int, 7);
@@ -24,6 +24,10 @@ func CalculateDateTimeVectors(availability_date_time map[int]map[string][]int) m
 
 	// calculate the date time vector for each user
 	for user, available_map := range availability_date_time {
+		if pre_calculated_date_time_vector[user] != nil {
+			result[user] = pre_calculated_date_time_vector[user];
+			continue; // no need to recalculate the user that has been calculated
+		}
 		date_index := 0; // this is the index for each day in the matrix (Monday will be 0, Tuesday will be 1, Wednesday will be 2,....)
 		for _, availability := range available_map {
 			for available_time := range availability {

@@ -14,10 +14,14 @@ type CartesianCoord struct {
 }
 
 // helper function to send GET request to get the latitude and longtitude of the user's address
-func Get_All_UsersLongLatMap(users_address map[int]map[string]string) map[int]map[string]float64 {
+func Get_All_UsersLongLatMap(users_address map[int]map[string]string, pre_found_users_address map[int]map[string]float64) map[int]map[string]float64 {
 	// send GET request to get the longtitude and latitude of the user's address
 	users_long_lat_map := make(map[int]map[string]float64);
 	for i := range users_address {
+		if pre_found_users_address[i] != nil {
+			users_long_lat_map[i] = pre_found_users_address[i];
+			continue; // skip if the user's long lat has been found before
+		}
 		users_long_lat_map[i] = make(map[string]float64); // initialize a map for this user
 		// get the long and lat for this user's address
 		user_id := i;
@@ -32,11 +36,17 @@ func Get_All_UsersLongLatMap(users_address map[int]map[string]string) map[int]ma
 }
 
 // receive a users map with long lat -> convert into cartesian vectors
-func LatLongToCartesian(users_long_lat map[int]map[string]float64) map[int]CartesianCoord {
+func LatLongToCartesian(users_long_lat map[int]map[string]float64, pre_calculated_long_lat map[int]CartesianCoord) map[int]CartesianCoord {
 	// all user's address cartesian vectors
 	cartesian_vectors_map := make(map[int]CartesianCoord);
 
 	for i := range users_long_lat {
+		// check if this user's coordinates have been calculated before
+		_, exists := pre_calculated_long_lat[i];
+		if exists {
+			cartesian_vectors_map[i] = pre_calculated_long_lat[i];
+			continue; 
+		}
 		// get user's key and long lat
 		user_key := i;
 		user_longtitude := users_long_lat[i]["Longtitude"];

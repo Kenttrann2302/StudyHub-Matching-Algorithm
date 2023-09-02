@@ -6,13 +6,17 @@ import (
 )
 
 // function to calculate the magnitude of each date time vector
-func CalculateDateTimeMagnitude(date_time_vectors map[int][][]int) map[int][]float64 {
+func CalculateDateTimeMagnitude(date_time_vectors map[int][][]int, pre_calculated_magnitude map[int][]float64) map[int][]float64 {
 	magnitude_result := make(map[int][]float64);
 	for key := range magnitude_result {
 		magnitude_result[key] = make([]float64, 7);
 	} 
 	
 	for user_key, date_vetor := range date_time_vectors {
+		if pre_calculated_magnitude[user_key] != nil {
+			magnitude_result[user_key] = pre_calculated_magnitude[user_key];
+			continue; // if the magnitude list for this user has already been calculated
+		}
 		for date_index, vector := range date_vetor {
 			magnitude := 0.0;
 			for _, value := range vector {
@@ -34,7 +38,7 @@ func CalculateDateTimeMagnitude(date_time_vectors map[int][][]int) map[int][]flo
 */
 
 // function to calculate the cosine similarity between each corresponding vector between each user
-func CalculateDateTimeCosineSimilarity(date_time_vectors map[int][][]int, vectors_magnitude map[int][]float64) [][]float64 { // the result will be the cosine similarity after comparing all the corresponding date between 2 users
+func CalculateDateTimeCosineSimilarity(date_time_vectors map[int][][]int, vectors_magnitude map[int][]float64, pre_calculated_cos [][]float64) [][]float64 { // the result will be the cosine similarity after comparing all the corresponding date between 2 users
 	cosineResult := make([][]float64, len(date_time_vectors));
 	for i := range date_time_vectors {
 		cosineResult[i] = make([]float64, len(date_time_vectors));
@@ -47,6 +51,10 @@ func CalculateDateTimeCosineSimilarity(date_time_vectors map[int][][]int, vector
 		for sec_user_key, second_list_vectors := range date_time_vectors {
 			if first_user_key == sec_user_key {
 				continue; // ignore the diagonals
+			}
+			if pre_calculated_cos[first_user_key][sec_user_key] != math.MaxFloat64 {
+				cosineResult[first_user_key][sec_user_key] = pre_calculated_cos[first_user_key][sec_user_key];
+				continue; // if the cosine result between these 2 users have been calculated before -> no need to calculate anymore
 			}
 			temp_sum_cosine_result := 0.0;
 			for vector := range first_list_vectors {

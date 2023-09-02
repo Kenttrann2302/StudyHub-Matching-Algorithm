@@ -14,7 +14,8 @@ func CalculateTFIDFMagnitude(list_of_vectors map[int][]float64, pre_calculated_m
 	vector_magnitudes_map := make(map[int]float64)
 	for user_key, vector := range list_of_vectors {
 		// if the user's vector has been calculated before -> skip
-		if pre_calculated_magnitude[user_key] != math.MaxFloat64 {
+		_, exists := pre_calculated_magnitude[user_key];
+		if exists {
 			vector_magnitudes_map[user_key] = pre_calculated_magnitude[user_key];
 			continue;
 		}
