@@ -14,13 +14,13 @@ I - Recommend users with the highest similarity scores to form study group:
 + Represent each user information into vectors:
     * Text data -> using TF-IDF for Natural Language Processing:
         + Interests
+        + Study_time_pref (these can be both categorical data or user manually type)
         + Study_env_pref (these can be both categorical data or user manually type)
         + Study_techniques_pref (these can be both categorical data or user manually type)
         + Time_management_pref (these can be both categorical data or user manually type)
     
     * Date and Time data:
         + Availability_time
-        + Graduation_date
     
     * Geolocation data: (**** These geolocation data can either be live data, (they will be used to find the recommended users when the user goes online) or they can be historical data if the user is offline or not willing to share the current location)
         + Address_line_1
@@ -38,7 +38,12 @@ I - Recommend users with the highest similarity scores to form study group:
         + Age
     
     * Categorical data:
-        + Study_time_pref 
+        + Graduation_date
+        + Study_time_pref (these can be both categorical data or user manually type) 
+        + Study_env_pref (these can be both categorical data or user manually type)
+        + Study_techniques_pref (these can be both categorical data or user manually type)
+        + Time_management_pref (these can be both categorical data or user manually type)
+        + Social_media_platform pref
         + Education_institutions
         + Education_majors
         + Education_degrees

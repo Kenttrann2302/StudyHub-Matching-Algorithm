@@ -52,7 +52,7 @@ func CalculateDateTimeCosineSimilarity(date_time_vectors map[int][][]int, vector
 			if first_user_key == sec_user_key {
 				continue; // ignore the diagonals
 			}
-			if pre_calculated_cos[first_user_key][sec_user_key] != math.MaxFloat64 {
+			if first_user_key < len(pre_calculated_cos) || sec_user_key < len(pre_calculated_cos[0]) {
 				cosineResult[first_user_key][sec_user_key] = pre_calculated_cos[first_user_key][sec_user_key];
 				continue; // if the cosine result between these 2 users have been calculated before -> no need to calculate anymore
 			}

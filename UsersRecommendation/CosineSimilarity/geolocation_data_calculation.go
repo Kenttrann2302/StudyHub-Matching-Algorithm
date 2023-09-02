@@ -41,7 +41,7 @@ func CalculateGeolocationCosineSimilarity(geolocation_vectors map[int]CartesianC
 				continue;
 			}
 			// check if the cosine similarity has been calculated before
-			if pre_calculated_vectors[first_user][sec_user] != math.MaxFloat64 {
+			if first_user < len(pre_calculated_vectors) || sec_user < len(pre_calculated_vectors[0]) {
 				cosineResult[first_user][sec_user] = pre_calculated_vectors[first_user][sec_user];
 				continue;
 			}

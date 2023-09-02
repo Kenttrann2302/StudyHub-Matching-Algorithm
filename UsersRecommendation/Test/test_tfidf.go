@@ -87,11 +87,13 @@ func (testSuite *TF_IDF_Test) test1(t *testing.T) bool {
 		2: "Google is a popular search engine",
 	}
 
+	pre_calculated_documentation := make(map[int]map[string]float64); // just for testing right now
+
 	// Set the tolerance based on the number of decimal places you want to compare
 	tolerance := 1e-3
 
 	// testing the function
-	tf_map := vectorsrepresentation.Tokenization(documentation)
+	tf_map := vectorsrepresentation.Tokenization(documentation, pre_calculated_documentation)
 	idf_map := vectorsrepresentation.CalculateIDF(documentation, tf_map)
 	tf_idf_map := vectorsrepresentation.CalculateTF_IDF(documentation, tf_map, idf_map)
 
@@ -154,8 +156,10 @@ func (testSuite *TF_IDF_Test) test2(t *testing.T) bool {
 		5: "I love coding!",
 	}
 
+	pre_calculated_documentation := make(map[int]map[string]float64); // just for testing right now
+
 	// testing the function
-	tf_map := vectorsrepresentation.Tokenization(documentation)
+	tf_map := vectorsrepresentation.Tokenization(documentation, pre_calculated_documentation)
 	idf_map := vectorsrepresentation.CalculateIDF(documentation, tf_map)
 	tf_idf_map := vectorsrepresentation.CalculateTF_IDF(documentation, tf_map, idf_map)
 
@@ -220,11 +224,14 @@ func (testSuite *TF_IDF_Test) test3(t *testing.T) bool {
 		2: "Coding is fun! I love coding projects. Solving coding challenges is satisfying. Debugging is essential for clean code. I find joy in coding. Debugging helps me learn.",
 		3: "Programming languages offer endless possibilities. Coding empowers creativity and innovation. Software development is a dynamic field. I specialize in web development. Web technologies are constantly evolving.",
 	}
+	
 
 	tolerance := 1e-3
 
+	pre_calculated_documentation := make(map[int]map[string]float64); // just for testing right now
+
 	// testing the function
-	tf_map := vectorsrepresentation.Tokenization(documentation)
+	tf_map := vectorsrepresentation.Tokenization(documentation, pre_calculated_documentation)
 	idf_map := vectorsrepresentation.CalculateIDF(documentation, tf_map)
 	tf_idf_map := vectorsrepresentation.CalculateTF_IDF(documentation, tf_map, idf_map)
 
@@ -301,8 +308,10 @@ func (testSuite *TF_IDF_Test) test4(t *testing.T) bool {
 
 	tolerance := 1e-3
 
+	pre_calculated_documentation := make(map[int]map[string]float64); // just for testing right now
+
 	// testing the function
-	tf_map := vectorsrepresentation.Tokenization(documentation)
+	tf_map := vectorsrepresentation.Tokenization(documentation, pre_calculated_documentation)
 	idf_map := vectorsrepresentation.CalculateIDF(documentation, tf_map)
 	tf_idf_map := vectorsrepresentation.CalculateTF_IDF(documentation, tf_map, idf_map)
 
@@ -392,8 +401,10 @@ func (testSuite *TF_IDF_Test) test5(t *testing.T) bool {
 
 	tolerance := 1e-3
 
+	pre_calculated_documentation := make(map[int]map[string]float64); // just for testing right now
+
 	// get the result of the function
-	tf_map := vectorsrepresentation.Tokenization(documentation)
+	tf_map := vectorsrepresentation.Tokenization(documentation, pre_calculated_documentation)
 	idf_map := vectorsrepresentation.CalculateIDF(documentation, tf_map)
 	tf_idf_map := vectorsrepresentation.CalculateTF_IDF(documentation, tf_map, idf_map)
 	tf_idf_vectors := vectorsrepresentation.CalculateTFIDFVectors(tf_idf_map, documentation)

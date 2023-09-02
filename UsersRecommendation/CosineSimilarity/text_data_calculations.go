@@ -42,7 +42,7 @@ func CalculateTFIDFCosineSimilarity(list_of_vectors map[int][]float64, vectors_m
 			if row == col {
 				continue // ignore the diagonals
 			}
-			if pre_calculated_cos_similarity[row][col] != math.MaxFloat64 {
+			if row < len(pre_calculated_cos_similarity) || col < len(pre_calculated_cos_similarity[0]) {
 				cosineResult[row][col] = pre_calculated_cos_similarity[row][col]; // if this relationship has been calculated -> skip
 				continue;
 			}
